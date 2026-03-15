@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { blogPosts } from "@/data/blog";
 
 /* ═══ Design Tokens ═══ */
@@ -238,6 +238,230 @@ const SectionHeader = ({ label, title, action, onAction }: { label?: string; tit
   </div>
 );
 
+/* ═══ Animated Counter Hook ═══ */
+function useCountUp(end: number, duration = 1800, suffix = "") {
+  const [count, setCount] = useState(0);
+  const [started, setStarted] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setStarted(true); obs.disconnect(); } },
+      { threshold: 0.3 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!started) return;
+    const start = performance.now();
+    const step = (now: number) => {
+      const progress = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3); // easeOutCubic
+      setCount(Math.round(eased * end));
+      if (progress < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }, [started, end, duration]);
+
+  return { ref, display: `${count}${suffix}`, started };
+}
+
+/* ═══ Circular Progress ═══ */
+const CircleProgress = ({ percent, color, size = 80, strokeWidth = 7, children }: {
+  percent: number; color: string; size?: number; strokeWidth?: number; children?: React.ReactNode;
+}) => {
+  const r = (size - strokeWidth) / 2;
+  const circumference = 2 * Math.PI * r;
+  const offset = circumference - (percent / 100) * circumference;
+  return (
+    <div style={{ position: "relative", width: size, height: size }}>
+      <svg width={size} height={size} style={{ transform: "rotate(-90deg)" }}>
+        <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke={C.border} strokeWidth={strokeWidth} />
+        <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke={color} strokeWidth={strokeWidth}
+          strokeLinecap="round" strokeDasharray={circumference} strokeDashoffset={offset}
+          style={{ transition: "stroke-dashoffset 1.8s cubic-bezier(0.22, 1, 0.36, 1)" }} />
+      </svg>
+      <div style={{
+        position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center",
+        flexDirection: "column",
+      }}>{children}</div>
+    </div>
+  );
+};
+
+/* ═══ Korea Nutrition Stats Section ═══ */
+const koreaStats = [
+  {
+    value: 25, suffix: "%", label: "초가공식품 비율",
+    desc: "한국인 전체 섭취 열량 중 초가공식품이 차지하는 비중",
+    color: C.red, icon: "🚫",
+    trend: "1998년 17% → 현재 25%+",
+  },
+  {
+    value: 64, suffix: "%", label: "당뇨 위험 증가",
+    desc: "초가공식품 10% 증가 시 당뇨 전단계 발생 위험",
+    color: "#E67E22", icon: "⚠️",
+    trend: "혈당 조절 장애 위험 56%↑",
+  },
+  {
+    value: 50, suffix: "%", label: "30~50대 남성 비만",
+    desc: "30~50대 한국 남성 절반이 비만 판정",
+    color: C.gold, icon: "📊",
+    trend: "여성도 4명 중 1명 과체중",
+  },
+  {
+    value: 3075, suffix: "mg", label: "일일 나트륨 섭취",
+    desc: "WHO 권고량 2,000mg의 약 1.5배",
+    color: C.green, icon: "🧂",
+    trend: "50대 이상 소폭 증가 추세",
+  },
+];
+
+const NutritionStatsSection = () => {
+  const stat0 = useCountUp(koreaStats[0].value, 1800, koreaStats[0].suffix);
+  const stat1 = useCountUp(koreaStats[1].value, 1800, koreaStats[1].suffix);
+  const stat2 = useCountUp(koreaStats[2].value, 1800, koreaStats[2].suffix);
+  const stat3 = useCountUp(koreaStats[3].value, 2200, "");
+  const stats = [stat0, stat1, stat2, stat3];
+
+  return (
+    <section style={{ padding: "0 20px 36px" }}>
+      {/* Header */}
+      <div style={{ textAlign: "center", marginBottom: 24 }}>
+        <div style={{
+          display: "inline-flex", alignItems: "center", gap: 6, marginBottom: 10,
+          background: C.redSoft, borderRadius: 100, padding: "5px 14px",
+          fontSize: 11, fontWeight: 700, color: C.red,
+        }}>
+          <span style={{ width: 6, height: 6, borderRadius: "50%", background: C.red, animation: "pulse 2s ease-in-out infinite" }} />
+          대한민국 영양 현실
+        </div>
+        <h2 style={{ fontSize: 22, fontWeight: 900, color: C.forest, margin: "0 0 6px", letterSpacing: -0.5 }}>
+          우리가 먹는 것이<br />우리를 만듭니다
+        </h2>
+        <p style={{ fontSize: 13, color: C.warm, margin: 0, lineHeight: 1.6 }}>
+          국민건강영양조사 데이터가 말해주는 불편한 진실
+        </p>
+      </div>
+
+      {/* Big Hero Stat */}
+      <div ref={stat0.ref} style={{
+        background: "linear-gradient(135deg, #1A2E1A, #2D5A35)",
+        borderRadius: 20, padding: "28px 24px", textAlign: "center", marginBottom: 14,
+        position: "relative", overflow: "hidden",
+      }}>
+        <div style={{
+          position: "absolute", top: -20, right: -20, width: 120, height: 120,
+          borderRadius: "50%", background: "rgba(196,77,77,0.15)",
+        }} />
+        <div style={{ fontSize: 28, marginBottom: 8 }}>🚫</div>
+        <div style={{
+          fontSize: 56, fontWeight: 900, color: "#FF6B6B",
+          letterSpacing: -2, lineHeight: 1, marginBottom: 4,
+          fontFamily: "'Pretendard', monospace",
+        }}>
+          {stat0.display}
+        </div>
+        <div style={{ fontSize: 16, fontWeight: 800, color: "#fff", marginBottom: 6 }}>
+          한국인 칼로리의 1/4이 초가공식품
+        </div>
+        <div style={{ fontSize: 12, color: "rgba(255,255,255,0.6)", marginBottom: 12 }}>
+          1998년 17%에서 꾸준히 증가하는 추세
+        </div>
+        {/* Mini progress bar */}
+        <div style={{ maxWidth: 240, margin: "0 auto" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", fontSize: 10, color: "rgba(255,255,255,0.5)", marginBottom: 4 }}>
+            <span>1998</span><span>현재</span>
+          </div>
+          <div style={{ height: 6, borderRadius: 3, background: "rgba(255,255,255,0.15)" }}>
+            <div style={{
+              height: "100%", borderRadius: 3,
+              background: "linear-gradient(90deg, #C49A3C, #FF6B6B)",
+              width: stat0.started ? "100%" : "0%",
+              transition: "width 2s cubic-bezier(0.22, 1, 0.36, 1)",
+            }} />
+          </div>
+          <div style={{ display: "flex", justifyContent: "space-between", fontSize: 10, color: "rgba(255,255,255,0.5)", marginTop: 4 }}>
+            <span>17%</span><span>25%+</span>
+          </div>
+        </div>
+      </div>
+
+      {/* 3-column stats */}
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10, marginBottom: 14 }}>
+        {[1, 2].map((i) => (
+          <div key={i} ref={i === 1 ? stat1.ref : stat2.ref} style={{
+            background: C.card, borderRadius: 16, padding: "20px 12px",
+            border: `1px solid ${C.border}`, textAlign: "center",
+            gridColumn: i === 1 ? "1 / 2" : "2 / 3",
+          }}>
+            <CircleProgress percent={stats[i].started ? koreaStats[i].value : 0} color={koreaStats[i].color} size={72} strokeWidth={6}>
+              <span style={{ fontSize: 18, fontWeight: 900, color: koreaStats[i].color, letterSpacing: -1 }}>
+                {stats[i].display}
+              </span>
+            </CircleProgress>
+            <div style={{ fontSize: 12, fontWeight: 800, color: C.forest, marginTop: 8, lineHeight: 1.3 }}>
+              {koreaStats[i].label}
+            </div>
+            <div style={{ fontSize: 10, color: C.muted, marginTop: 3, lineHeight: 1.4 }}>
+              {koreaStats[i].desc}
+            </div>
+          </div>
+        ))}
+        {/* Sodium stat */}
+        <div ref={stat3.ref} style={{
+          background: C.card, borderRadius: 16, padding: "20px 12px",
+          border: `1px solid ${C.border}`, textAlign: "center",
+        }}>
+          <div style={{ fontSize: 24, marginBottom: 6 }}>🧂</div>
+          <div style={{ fontSize: 22, fontWeight: 900, color: C.green, letterSpacing: -1 }}>
+            {stat3.display}<span style={{ fontSize: 12, fontWeight: 600 }}>mg</span>
+          </div>
+          <div style={{ fontSize: 12, fontWeight: 800, color: C.forest, marginTop: 6, lineHeight: 1.3 }}>
+            일일 나트륨
+          </div>
+          <div style={{ fontSize: 10, color: C.muted, marginTop: 3, lineHeight: 1.4 }}>
+            WHO 권고의 1.5배
+          </div>
+        </div>
+      </div>
+
+      {/* CTA banner */}
+      <div style={{
+        background: C.greenSoft, borderRadius: 14, padding: "16px 20px",
+        display: "flex", alignItems: "center", gap: 14, marginBottom: 14,
+      }}>
+        <span style={{ fontSize: 28, flexShrink: 0 }}>💡</span>
+        <div>
+          <div style={{ fontSize: 14, fontWeight: 800, color: C.forest, marginBottom: 2 }}>
+            해답은 진짜 음식에 있습니다
+          </div>
+          <div style={{ fontSize: 12, color: C.warm, lineHeight: 1.5 }}>
+            초가공식품을 줄이고 리얼푸드로 바꾸는 것만으로 만성질환 위험을 크게 낮출 수 있습니다.
+          </div>
+        </div>
+      </div>
+
+      {/* Source citation */}
+      <div style={{
+        fontSize: 10, color: C.muted, lineHeight: 1.6,
+        padding: "10px 14px", background: C.card, borderRadius: 10,
+        border: `1px solid ${C.border}`,
+      }}>
+        <div style={{ fontWeight: 700, marginBottom: 3 }}>📋 출처</div>
+        <div>· 질병관리청, 2024 국민건강영양조사</div>
+        <div>· 대한당뇨병학회, Diabetes Fact Sheet 2024</div>
+        <div>· 한국영양학회지, 초가공식품 섭취 현황 분석 (2016-2019)</div>
+        <div>· 정책브리핑, 비만 아동·청소년 초가공식품 섭취 연구</div>
+      </div>
+    </section>
+  );
+};
+
 /* ═══ Main App ═══ */
 export default function RealFoodJuYeonApp() {
   const [page, setPage] = useState(PAGES.HOME);
@@ -378,6 +602,9 @@ export default function RealFoodJuYeonApp() {
               }}>토픽 보기</button>
             </div>
           </section>
+
+          {/* Korea Nutrition Stats */}
+          <NutritionStatsSection />
 
           {/* Popular Topics — Mel Robbins style grid */}
           <section style={{ padding: "0 20px 32px" }}>
