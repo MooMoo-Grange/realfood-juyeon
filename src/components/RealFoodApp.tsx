@@ -562,9 +562,9 @@ export default function RealFoodJuYeonApp() {
             </div>
 
             <div style={{ display: "flex", gap: 16, marginTop: 40, justifyContent: "center" }}>
-              {["YouTube", "Instagram", "Blog"].map((s) => (
-                <span key={s} style={{ fontSize: 13, color: C.warm, fontWeight: 500 }}>{s}</span>
-              ))}
+              <span style={{ fontSize: 13, color: C.warm, fontWeight: 500 }}>YouTube</span>
+              <a href="https://www.instagram.com/_a_little_space" target="_blank" rel="noopener noreferrer" style={{ fontSize: 13, color: C.warm, fontWeight: 500, textDecoration: "none" }}>Instagram</a>
+              <span style={{ fontSize: 13, color: C.warm, fontWeight: 500 }}>Blog</span>
             </div>
           </nav>
         </div>
@@ -591,10 +591,11 @@ export default function RealFoodJuYeonApp() {
               해발 1,000m 목장에서 전하는 이야기.
             </p>
             <div style={{ display: "flex", gap: 10, justifyContent: "center" }}>
-              <button style={{
+              <a href="https://www.instagram.com/_a_little_space" target="_blank" rel="noopener noreferrer" style={{
                 padding: "12px 24px", borderRadius: 12, fontSize: 14, fontWeight: 700,
                 background: C.forest, color: "#fff", border: "none", cursor: "pointer", fontFamily: font,
-              }}>유튜브 구독</button>
+                textDecoration: "none", display: "inline-block",
+              }}>인스타 팔로우</a>
               <button onClick={() => setPage(PAGES.TOPICS)} style={{
                 padding: "12px 24px", borderRadius: 12, fontSize: 14, fontWeight: 700,
                 background: "transparent", color: C.forest, border: `1.5px solid ${C.border}`,
@@ -937,11 +938,12 @@ export default function RealFoodJuYeonApp() {
               background: C.greenSoft, borderRadius: 16, padding: 24, marginTop: 32, textAlign: "center",
             }}>
               <div style={{ fontSize: 15, fontWeight: 700, color: C.forest, marginBottom: 8 }}>이 글이 도움이 되셨나요?</div>
-              <div style={{ fontSize: 13, color: C.warm, marginBottom: 16 }}>유튜브에서 더 많은 리얼푸드 콘텐츠를 만나보세요</div>
-              <button style={{
+              <div style={{ fontSize: 13, color: C.warm, marginBottom: 16 }}>인스타그램에서 더 많은 리얼푸드 콘텐츠를 만나보세요</div>
+              <a href="https://www.instagram.com/_a_little_space" target="_blank" rel="noopener noreferrer" style={{
                 padding: "12px 24px", borderRadius: 12, fontSize: 14, fontWeight: 700,
                 background: C.forest, color: "#fff", border: "none", cursor: "pointer", fontFamily: font,
-              }}>▶ 유튜브 구독하기</button>
+                textDecoration: "none", display: "inline-block",
+              }}>📷 인스타그램 팔로우</a>
             </div>
           </div>
         </main>
@@ -956,7 +958,7 @@ export default function RealFoodJuYeonApp() {
           </div>
           <div style={{ display: "flex", gap: 14, fontSize: 12, color: C.muted }}>
             <span>YouTube</span>
-            <span>Instagram</span>
+            <a href="https://www.instagram.com/_a_little_space" target="_blank" rel="noopener noreferrer" style={{ color: C.muted, textDecoration: "none" }}>Instagram</a>
             <span>Blog</span>
           </div>
         </div>
