@@ -28,7 +28,7 @@ const popularTopics = [
   { id: "ultra-processed", icon: "🚫", label: "초가공식품", desc: "진짜 음식과 가짜 음식 구별법", count: 24 },
   { id: "kids-food", icon: "👶", label: "아이 먹거리", desc: "성장기 아이를 위한 영양 가이드", count: 18 },
   { id: "nutrients", icon: "💊", label: "영양소", desc: "비타민, 미네랄, 단백질 완전정복", count: 22 },
-  { id: "recipes", icon: "🥗", label: "레시피", desc: "영양사가 검증한 리얼푸드 레시피", count: 48 },
+  { id: "recipes", icon: "🥗", label: "레시피", desc: "주연이 검증한 리얼푸드 레시피", count: 48 },
   { id: "label-reading", icon: "🏷️", label: "식품 라벨", desc: "마트에서 살아남는 법", count: 12 },
   { id: "dairy", icon: "🥛", label: "유제품", desc: "A2 우유, 요거트, 치즈의 모든 것", count: 15 },
   { id: "seasonal", icon: "🌿", label: "제철 식재료", desc: "계절마다 달라지는 최고의 선택", count: 16 },
@@ -53,7 +53,7 @@ const additionalTopics = [
 const featuredEpisodes = [
   {
     id: 1, topic: "초가공식품", topicColor: C.red, topicBg: C.redSoft,
-    title: "영양사인 제가 절대 안 먹는 5가지",
+    title: "제가 절대 안 먹는 5가지",
     desc: "마트에서 흔히 보이는 이 식품들, 왜 피해야 하는지 성분표를 하나씩 뜯어봅니다.",
     type: "영상", duration: "12분", date: "2026.04.01",
     videoId: "Iyf5ViY2AbA",
@@ -68,7 +68,7 @@ const featuredEpisodes = [
   {
     id: 3, topic: "영양소", topicColor: C.green, topicBg: C.greenSoft,
     title: "비타민D, 한국인 90%가 부족합니다",
-    desc: "영양사 관점에서 알려주는 비타민D 부족의 증상, 음식, 보충법까지.",
+    desc: "비타민D 부족의 증상, 음식, 보충법까지 알려드립니다.",
     type: "영상", duration: "5분", date: "2026.04.07",
     videoId: "Sn7T46fCjLE",
   },
@@ -355,7 +355,7 @@ export default function RealFoodJuYeonApp() {
               fontSize: 12, fontWeight: 700, color: C.green,
             }}>
               <span style={{ width: 6, height: 6, borderRadius: "50%", background: C.green }} />
-              보건소 영양사의 리얼푸드 가이드
+              주연의 리얼푸드 가이드
             </div>
             <h1 style={{ fontSize: 30, fontWeight: 900, color: C.forest, lineHeight: 1.25, letterSpacing: -1, margin: "0 0 12px" }}>
               진짜 음식이<br /><span style={{ color: C.green }}>진짜 건강</span>입니다
@@ -434,7 +434,7 @@ export default function RealFoodJuYeonApp() {
               <div style={{ fontSize: 32, marginBottom: 12 }}>📬</div>
               <h3 style={{ fontSize: 19, fontWeight: 800, color: "#fff", margin: "0 0 8px" }}>리얼푸드 뉴스레터</h3>
               <p style={{ fontSize: 13, color: "rgba(255,255,255,0.7)", lineHeight: 1.6, margin: "0 0 20px" }}>
-                매주 월요일, 영양사 주연이 고른<br />리얼푸드 팁과 제철 레시피를 보내드립니다.
+                매주 월요일, 주연이 고른<br />리얼푸드 팁과 제철 레시피를 보내드립니다.
               </p>
               <div style={{
                 display: "flex", gap: 6, background: "rgba(255,255,255,0.1)",
@@ -467,9 +467,9 @@ export default function RealFoodJuYeonApp() {
                 fontSize: 32,
               }}>👩‍⚕️</div>
               <div style={{ flex: 1 }}>
-                <div style={{ fontSize: 15, fontWeight: 800, color: C.forest, marginBottom: 2 }}>영양사 주연</div>
+                <div style={{ fontSize: 15, fontWeight: 800, color: C.forest, marginBottom: 2 }}>주연</div>
                 <div style={{ fontSize: 12, color: C.warm, lineHeight: 1.5 }}>
-                  태백시 보건소 영양사. 해발 1,000m 삼수령 무무목장에서 A2 저지 젖소를 키우는 가족과 함께합니다.
+                  해발 1,000m 삼수령 무무목장에서 A2 저지 젖소를 키우는 가족과 함께합니다.
                 </div>
               </div>
               <button onClick={() => setPage(PAGES.ABOUT)} style={{
@@ -550,8 +550,8 @@ export default function RealFoodJuYeonApp() {
               background: C.greenSoft, display: "flex", alignItems: "center", justifyContent: "center",
               fontSize: 48,
             }}>👩‍⚕️</div>
-            <h1 style={{ fontSize: 24, fontWeight: 900, color: C.forest, margin: "0 0 4px" }}>영양사 주연</h1>
-            <p style={{ fontSize: 13, color: C.warm, margin: 0 }}>보건소 영양사 · 리얼푸드 가이드</p>
+            <h1 style={{ fontSize: 24, fontWeight: 900, color: C.forest, margin: "0 0 4px" }}>주연</h1>
+            <p style={{ fontSize: 13, color: C.warm, margin: 0 }}>리얼푸드 가이드</p>
           </div>
 
           <div style={{
@@ -559,10 +559,10 @@ export default function RealFoodJuYeonApp() {
             border: `1px solid ${C.border}`, marginBottom: 20,
           }}>
             <p style={{ fontSize: 15, lineHeight: 1.9, color: C.forest, margin: "0 0 16px" }}>
-              안녕하세요, <strong>영양사 주연</strong>입니다.
+              안녕하세요, <strong>주연</strong>입니다.
             </p>
             <p style={{ fontSize: 15, lineHeight: 1.9, color: C.forest, margin: "0 0 16px" }}>
-              태백시 보건소에서 지역 주민들의 영양 상담을 하면서 매일 같은 질문을 받습니다.
+              주변에서 매일 같은 질문을 받습니다.
               <em style={{ color: C.green }}> &ldquo;뭘 먹어야 건강해질까요?&rdquo;</em>
             </p>
             <p style={{ fontSize: 15, lineHeight: 1.9, color: C.forest, margin: "0 0 16px" }}>
@@ -576,8 +576,8 @@ export default function RealFoodJuYeonApp() {
 
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
             {[
-              { icon: "🎓", label: "공인 영양사 면허" },
-              { icon: "🏥", label: "태백시 보건소 근무" },
+              { icon: "🌄", label: "삼수령 해발 1,000m" },
+              { icon: "🥛", label: "A2 저지 젖소 사육" },
               { icon: "🐄", label: "삼수령 무무목장" },
               { icon: "👨‍👩‍👧‍👦", label: "세 아이의 엄마" },
             ].map((item) => (
@@ -597,7 +597,7 @@ export default function RealFoodJuYeonApp() {
       {page === PAGES.BLOG && (
         <main style={{ padding: "28px 20px 40px" }}>
           <h1 style={{ fontSize: 28, fontWeight: 900, color: C.forest, margin: "0 0 8px", letterSpacing: -0.5 }}>블로그</h1>
-          <p style={{ fontSize: 14, color: C.warm, margin: "0 0 28px" }}>영양사 주연이 직접 쓰는 리얼푸드 칼럼</p>
+          <p style={{ fontSize: 14, color: C.warm, margin: "0 0 28px" }}>주연이 직접 쓰는 리얼푸드 칼럼</p>
           <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
             {blogPosts.map((post) => (
               <button key={post.slug} onClick={() => navigateBlog(post.slug)} style={{
@@ -665,8 +665,8 @@ export default function RealFoodJuYeonApp() {
                 display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20,
               }}>👩‍⚕️</div>
               <div>
-                <div style={{ fontSize: 13, fontWeight: 700, color: C.forest }}>영양사 주연</div>
-                <div style={{ fontSize: 11, color: C.muted }}>보건소 영양사 · 리얼푸드 가이드</div>
+                <div style={{ fontSize: 13, fontWeight: 700, color: C.forest }}>주연</div>
+                <div style={{ fontSize: 11, color: C.muted }}>리얼푸드 가이드</div>
               </div>
             </div>
 

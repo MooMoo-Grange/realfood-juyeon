@@ -106,7 +106,7 @@ export default async function Image() {
             display: "flex",
           }}
         >
-          보건소 영양사가 해발 1,000m 목장에서 전하는 진짜 음식 이야기
+          해발 1,000m 목장에서 전하는 진짜 음식 이야기
         </div>
 
         {/* Bottom tags */}
