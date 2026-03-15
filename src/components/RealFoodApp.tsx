@@ -462,6 +462,98 @@ const NutritionStatsSection = () => {
   );
 };
 
+/* ═══ Newsletter Form ═══ */
+const NewsletterSection = () => {
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error" | "duplicate">("idle");
+
+  const handleSubmit = async () => {
+    if (!email || !email.includes("@")) {
+      setStatus("error");
+      return;
+    }
+    setStatus("loading");
+    try {
+      const res = await fetch("/api/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      if (res.status === 409) {
+        setStatus("duplicate");
+      } else if (res.ok) {
+        setStatus("success");
+        setEmail("");
+      } else {
+        setStatus("error");
+      }
+    } catch {
+      setStatus("error");
+    }
+  };
+
+  return (
+    <section style={{ padding: "0 20px 32px" }}>
+      <div style={{
+        background: C.forest, borderRadius: 20, padding: "32px 24px", textAlign: "center",
+      }}>
+        {status === "success" ? (
+          <>
+            <div style={{ fontSize: 40, marginBottom: 12 }}>🎉</div>
+            <h3 style={{ fontSize: 19, fontWeight: 800, color: "#fff", margin: "0 0 8px" }}>구독 완료!</h3>
+            <p style={{ fontSize: 13, color: "rgba(255,255,255,0.7)", lineHeight: 1.6 }}>
+              리얼푸드 뉴스레터를 보내드리겠습니다.<br />감사합니다!
+            </p>
+          </>
+        ) : (
+          <>
+            <div style={{ fontSize: 32, marginBottom: 12 }}>📬</div>
+            <h3 style={{ fontSize: 19, fontWeight: 800, color: "#fff", margin: "0 0 8px" }}>리얼푸드 뉴스레터</h3>
+            <p style={{ fontSize: 13, color: "rgba(255,255,255,0.7)", lineHeight: 1.6, margin: "0 0 20px" }}>
+              매주 월요일, 주연이 고른<br />리얼푸드 팁과 제철 레시피를 보내드립니다.
+            </p>
+            <div style={{
+              display: "flex", gap: 6, background: "rgba(255,255,255,0.1)",
+              borderRadius: 12, padding: 5,
+            }}>
+              <input
+                placeholder="이메일 주소"
+                type="email"
+                value={email}
+                onChange={(e) => { setEmail(e.target.value); if (status !== "idle") setStatus("idle"); }}
+                onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
+                style={{
+                  flex: 1, padding: "12px 14px", borderRadius: 8, border: "none",
+                  background: "rgba(255,255,255,0.95)", fontSize: 14, fontFamily: font,
+                  color: C.forest, outline: "none",
+                }}
+              />
+              <button
+                onClick={handleSubmit}
+                disabled={status === "loading"}
+                style={{
+                  padding: "12px 18px", borderRadius: 8, border: "none",
+                  background: status === "loading" ? C.warm : C.green,
+                  color: "#fff", fontWeight: 700, fontSize: 13,
+                  cursor: status === "loading" ? "wait" : "pointer",
+                  fontFamily: font, whiteSpace: "nowrap",
+                  opacity: status === "loading" ? 0.7 : 1,
+                }}
+              >{status === "loading" ? "..." : "구독"}</button>
+            </div>
+            {status === "duplicate" && (
+              <p style={{ fontSize: 12, color: C.gold, marginTop: 10 }}>이미 구독 중인 이메일입니다 😊</p>
+            )}
+            {status === "error" && (
+              <p style={{ fontSize: 12, color: "#FF6B6B", marginTop: 10 }}>유효한 이메일 주소를 입력해주세요.</p>
+            )}
+          </>
+        )}
+      </div>
+    </section>
+  );
+};
+
 /* ═══ Main App ═══ */
 export default function RealFoodJuYeonApp() {
   const [page, setPage] = useState(PAGES.HOME);
@@ -657,32 +749,7 @@ export default function RealFoodJuYeonApp() {
           </section>
 
           {/* Newsletter CTA */}
-          <section style={{ padding: "0 20px 32px" }}>
-            <div style={{
-              background: C.forest, borderRadius: 20, padding: "32px 24px", textAlign: "center",
-            }}>
-              <div style={{ fontSize: 32, marginBottom: 12 }}>📬</div>
-              <h3 style={{ fontSize: 19, fontWeight: 800, color: "#fff", margin: "0 0 8px" }}>리얼푸드 뉴스레터</h3>
-              <p style={{ fontSize: 13, color: "rgba(255,255,255,0.7)", lineHeight: 1.6, margin: "0 0 20px" }}>
-                매주 월요일, 주연이 고른<br />리얼푸드 팁과 제철 레시피를 보내드립니다.
-              </p>
-              <div style={{
-                display: "flex", gap: 6, background: "rgba(255,255,255,0.1)",
-                borderRadius: 12, padding: 5,
-              }}>
-                <input placeholder="이메일 주소" style={{
-                  flex: 1, padding: "12px 14px", borderRadius: 8, border: "none",
-                  background: "rgba(255,255,255,0.95)", fontSize: 14, fontFamily: font,
-                  color: C.forest, outline: "none",
-                }} />
-                <button style={{
-                  padding: "12px 18px", borderRadius: 8, border: "none",
-                  background: C.green, color: "#fff", fontWeight: 700, fontSize: 13,
-                  cursor: "pointer", fontFamily: font, whiteSpace: "nowrap",
-                }}>구독</button>
-              </div>
-            </div>
-          </section>
+          <NewsletterSection />
 
           {/* About teaser */}
           <section style={{ padding: "0 20px 40px" }}>
