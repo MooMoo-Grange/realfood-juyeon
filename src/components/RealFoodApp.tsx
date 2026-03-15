@@ -419,7 +419,7 @@ const NutritionStatsSection = () => {
         }}>
           <div style={{ fontSize: 24, marginBottom: 6 }}>🧂</div>
           <div style={{ fontSize: 22, fontWeight: 900, color: C.green, letterSpacing: -1 }}>
-            {stat3.display}<span style={{ fontSize: 12, fontWeight: 600 }}>mg</span>
+            {stat3.display} <span style={{ fontSize: 12, fontWeight: 600 }}>mg</span>
           </div>
           <div style={{ fontSize: 12, fontWeight: 800, color: C.forest, marginTop: 6, lineHeight: 1.3 }}>
             일일 나트륨
