@@ -262,7 +262,7 @@ export default function RealFoodJuYeonApp() {
   const currentTopic = allTopics.find((t) => t.id === selectedTopic);
 
   return (
-    <div style={{ fontFamily: font, background: C.bg, minHeight: "100vh", color: C.warm, maxWidth: 480, margin: "0 auto", position: "relative", overflowX: "hidden" }}>
+    <div style={{ fontFamily: font, background: C.bg, minHeight: "100vh", color: C.warm, maxWidth: 480, margin: "0 auto", position: "relative", overflowX: "hidden", boxShadow: "0 0 60px rgba(0,0,0,0.06)" }}>
 
       {/* ═══ Sticky Header ═══ */}
       <header style={{
@@ -296,7 +296,9 @@ export default function RealFoodJuYeonApp() {
       {/* ═══ Mobile Menu Overlay ═══ */}
       {menuOpen && (
         <div style={{
-          position: "fixed", inset: 0, zIndex: 45, background: "rgba(250,250,247,0.98)",
+          position: "fixed", top: 0, bottom: 0, left: "50%", transform: "translateX(-50%)",
+          width: "100%", maxWidth: 480,
+          zIndex: 45, background: "rgba(250,250,247,0.98)",
           paddingTop: 64, overflowY: "auto",
         }}>
           <nav style={{ padding: "24px 20px" }}>
