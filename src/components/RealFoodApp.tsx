@@ -564,8 +564,8 @@ export default function RealFoodJuYeonApp() {
               안녕하세요, <strong>주연</strong>입니다.
             </p>
             <p style={{ fontSize: 15, lineHeight: 1.9, color: C.forest, margin: "0 0 16px" }}>
-              주변에서 매일 같은 질문을 받습니다.
-              <em style={{ color: C.green }}> &ldquo;뭘 먹어야 건강해질까요?&rdquo;</em>
+              세 아이를 키우는 영양사로서 영양상담을 하다보면 매일 같은 질문을 받습니다.
+              <em style={{ color: C.green }}> &ldquo;뭘 먹어야 건강해질까요? 다이어트를 어떻게 할까요?&rdquo;</em>
             </p>
             <p style={{ fontSize: 15, lineHeight: 1.9, color: C.forest, margin: "0 0 16px" }}>
               답은 생각보다 단순합니다. <strong>진짜 음식을 먹으면 됩니다.</strong>
@@ -578,10 +578,10 @@ export default function RealFoodJuYeonApp() {
 
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
             {[
-              { icon: "🌄", label: "삼수령 해발 1,000m" },
-              { icon: "🥛", label: "A2 저지 젖소 사육" },
               { icon: "🐄", label: "삼수령 무무목장" },
+              { icon: "🥛", label: "A2 저지 젖소 사육" },
               { icon: "👨‍👩‍👧‍👦", label: "세 아이의 엄마" },
+              { icon: "🌿", label: "리얼푸드 연구가" },
             ].map((item) => (
               <div key={item.label} style={{
                 background: C.card, borderRadius: 12, padding: "16px 14px",
