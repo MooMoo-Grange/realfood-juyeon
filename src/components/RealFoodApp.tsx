@@ -56,24 +56,28 @@ const featuredEpisodes = [
     title: "영양사인 제가 절대 안 먹는 5가지",
     desc: "마트에서 흔히 보이는 이 식품들, 왜 피해야 하는지 성분표를 하나씩 뜯어봅니다.",
     type: "영상", duration: "12분", date: "2026.04.01",
+    videoId: "Iyf5ViY2AbA",
   },
   {
     id: 2, topic: "아이 먹거리", topicColor: C.gold, topicBg: C.goldSoft,
     title: "아이 간식, 이것만 바꿔도 달라집니다",
     desc: "시판 과자 대신 5분이면 만드는 리얼푸드 간식 3가지를 소개합니다.",
     type: "영상", duration: "8분", date: "2026.04.04",
+    videoId: "BGwb8_hbzUM",
   },
   {
     id: 3, topic: "영양소", topicColor: C.green, topicBg: C.greenSoft,
     title: "비타민D, 한국인 90%가 부족합니다",
     desc: "영양사 관점에서 알려주는 비타민D 부족의 증상, 음식, 보충법까지.",
-    type: "아티클", duration: "5분 읽기", date: "2026.04.07",
+    type: "영상", duration: "5분", date: "2026.04.07",
+    videoId: "Sn7T46fCjLE",
   },
   {
     id: 4, topic: "유제품", topicColor: C.greenAccent, topicBg: C.greenSoft,
     title: "A2 우유 vs 일반 우유, 뭐가 다를까?",
     desc: "해발 1,000m 목장 우유를 직접 비교 분석합니다. 소화가 안 되는 분들 주목.",
     type: "영상", duration: "10분", date: "2026.04.11",
+    videoId: "GGR8rRwnhYk",
   },
 ];
 
@@ -99,6 +103,7 @@ interface Episode {
   type: string;
   duration: string;
   date: string;
+  videoId?: string;
 }
 
 /* ═══ Components ═══ */
@@ -124,30 +129,76 @@ const TopicCard = ({ topic, onClick, size = "normal" }: { topic: Topic; onClick?
   </button>
 );
 
-const EpisodeCard = ({ ep, style: extraStyle }: { ep: Episode; style?: React.CSSProperties }) => (
+const EpisodeCard = ({ ep, style: extraStyle }: { ep: Episode; style?: React.CSSProperties }) => {
+  const [playing, setPlaying] = useState(false);
+  return (
   <div style={{
     background: C.card, borderRadius: 16, overflow: "hidden",
-    border: `1px solid ${C.border}`, cursor: "pointer",
+    border: `1px solid ${C.border}`,
     transition: "all 0.2s", ...extraStyle,
   }}
     onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(0,0,0,0.06)"; }}
     onMouseLeave={(e) => { e.currentTarget.style.transform = "none"; e.currentTarget.style.boxShadow = "none"; }}
   >
-    {/* Thumbnail placeholder */}
+    {/* YouTube Video / Thumbnail */}
     <div style={{
-      height: 180, background: `linear-gradient(135deg, ${C.greenSoft}, ${C.goldSoft})`,
+      height: 180, background: "#000",
       display: "flex", alignItems: "center", justifyContent: "center", position: "relative",
-    }}>
-      <div style={{
-        width: 56, height: 56, borderRadius: "50%", background: "rgba(255,255,255,0.9)",
-        display: "flex", alignItems: "center", justifyContent: "center",
-        boxShadow: "0 4px 16px rgba(0,0,0,0.1)",
-      }}>
-        <span style={{ fontSize: 22, marginLeft: 3 }}>▶</span>
-      </div>
+      cursor: "pointer",
+    }}
+      onClick={() => !playing && ep.videoId && setPlaying(true)}
+    >
+      {ep.videoId && playing ? (
+        <iframe
+          width="100%"
+          height="100%"
+          src={`https://www.youtube.com/embed/${ep.videoId}?autoplay=1&rel=0`}
+          title={ep.title}
+          frameBorder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+          style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%" }}
+        />
+      ) : ep.videoId ? (
+        <>
+          <img
+            src={`https://img.youtube.com/vi/${ep.videoId}/hqdefault.jpg`}
+            alt={ep.title}
+            style={{ width: "100%", height: "100%", objectFit: "cover" }}
+          />
+          <div style={{
+            position: "absolute", inset: 0,
+            display: "flex", alignItems: "center", justifyContent: "center",
+            background: "rgba(0,0,0,0.25)",
+          }}>
+            <div style={{
+              width: 56, height: 56, borderRadius: "50%", background: "rgba(255,255,255,0.95)",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              boxShadow: "0 4px 16px rgba(0,0,0,0.2)",
+            }}>
+              <span style={{ fontSize: 22, marginLeft: 3, color: C.red }}>▶</span>
+            </div>
+          </div>
+        </>
+      ) : (
+        <div style={{
+          width: "100%", height: "100%",
+          background: `linear-gradient(135deg, ${C.greenSoft}, ${C.goldSoft})`,
+          display: "flex", alignItems: "center", justifyContent: "center",
+        }}>
+          <div style={{
+            width: 56, height: 56, borderRadius: "50%", background: "rgba(255,255,255,0.9)",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            boxShadow: "0 4px 16px rgba(0,0,0,0.1)",
+          }}>
+            <span style={{ fontSize: 22, marginLeft: 3 }}>▶</span>
+          </div>
+        </div>
+      )}
       <span style={{
         position: "absolute", bottom: 10, right: 10, background: "rgba(0,0,0,0.7)",
         color: "#fff", fontSize: 11, fontWeight: 600, padding: "3px 8px", borderRadius: 4,
+        zIndex: 2,
       }}>{ep.duration}</span>
     </div>
     <div style={{ padding: "14px 16px 18px" }}>
@@ -169,7 +220,8 @@ const EpisodeCard = ({ ep, style: extraStyle }: { ep: Episode; style?: React.CSS
       </p>
     </div>
   </div>
-);
+  );
+};
 
 const SectionHeader = ({ label, title, action, onAction }: { label?: string; title: string; action?: string; onAction?: () => void }) => (
   <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginBottom: 16 }}>
